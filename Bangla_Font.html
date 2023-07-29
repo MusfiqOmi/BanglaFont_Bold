@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Display Text</title>
+    <style>
+              .head1 {
+            margin-bottom: 20px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: crimson;
+        }
+        .input {
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        body {
+            background-color: aquamarine;
+            border: 2px solid black;
+            padding: 20px;
+        }
+
+        .textarea {
+            width: 1450px;
+            border: 1px solid black;
+            border-color: blueviolet;
+            resize: none;
+            overflow: hidden;
+            margin-top: 10px;
+            border-radius: 15px;
+            height: 200px;
+            align-items: center;
+        }
+        .display {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .link {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+        }
+        b {
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <b><u><header class="head1">ASSIGNMENT TASK</header></u></b>
+    <div class="textarea">
+        <p id="displayButton"></p>
+    </div>
+    <div class="input">
+        <textarea id="inputBox" rows="6" cols="50" placeholder="Enter text">‘শক্তি’ দেখাতে চায় আওয়ামী লীগ। পাশাপাশি জনগণ আওয়ামী লীগের পাশে আছে, সেটিও দেখাতে চায় দলটি। আওয়ামী লীগের উচ্চপর্যায়ের একাধিক সূত্র জানিয়েছে, আগে দুই দলের পাল্টাপাল্টি সমাবেশ হলেও বর্তমান পরিস্থিতি ভিন্ন। কারণ, বিএনপি সরকার পতনের এক দফার আন্দোলন ঘোষণা দিতে যাচ্ছে আজ (দুপুরে নয়াপল্টনে সমাবেশ করবে দলটি)। এর অর্থ হচ্ছে দলটি নির্বাচন ঠেকানোর পথে হাঁটছে। এ ছাড়া দলটি বিদেশিদের কাছে এবং বিভিন্ন সভা-সমাবেশে বলছে আওয়ামী লীগের জনসমর্থন নেই। যে কারণে রাজপথে ধারাবাহিকভাবে বড় জমায়েত করে আওয়ামী লীগ দেখাতে চায় তাদের সঙ্গে জনগণ আছে।</textarea>
+        <button onclick="displayText()">Display Text</button>
+    </div>
+    <button onclick="window.print()">Print this page</button>
+    <script>
+        function displayText() {
+            var inputText = document.getElementById("inputBox").value;
+            var displaytextbutton = document.getElementById("displayButton");
+
+            var words = inputText.split(' ');
+            var formattedText = '';
+
+            for (var i = 0; i < words.length; i++) {
+                var word = words[i];
+                var boldLetters= '';
+
+                var excludedChars = [',', ';', '।', '?', '!', '‘','’','(',')','#','*','!',' '];
+                var excludedStart = '';
+                var excludedEnd = '';
+
+                for (var j = 0; j < excludedChars.length; j++) {
+                    var excludedChar = excludedChars[j];
+                    if (word.startsWith(excludedChar)) {
+                        excludedStart = excludedChar; 
+                        word = word.substring(1); 
+                    }
+                    if (word.endsWith(excludedChar)) {
+                        excludedEnd = excludedChar; 
+                        word = word.substring(0, word.length - 1); 
+                    }
+                }
+
+                if (word.length > 2 && word.length < 16) {
+                    var halfLength = Math.ceil(word.length / 2);
+                    var firstHalf = word.substring(0, halfLength);
+                    console.log("firstHalf: " + firstHalf );
+                    var secondHalf = word.substring(halfLength);
+                    console.log("secondHalf: " + secondHalf );
+
+                    var signs = ['া', 'ি', 'ী', 'ু', 'ূ', 'ৃ', 'ে', 'ৈ', 'ো', 'ৌ', 'ং'];
+                    var specialChars = ['্', 'ৎ', '০'];
+
+                    if (signs.includes(secondHalf.charAt(0))) {
+                        boldLetters = '<b>' + firstHalf + secondHalf.charAt(0) + '</b>' + secondHalf.substring(1);
+                    } else if (signs.includes(secondHalf.charAt(2))) {
+                        boldLetters = '<b>' + firstHalf + secondHalf.substring(0, 3) + '</b>' + secondHalf.substring(3);
+                    } else if (specialChars.includes(firstHalf.charAt(firstHalf.length - 1))) {
+                        boldLetters = '<b>' + firstHalf + secondHalf.substring(0, 2) + '</b>' + secondHalf.substring(2);
+                    } else if (specialChars.includes(secondHalf.charAt(0))) {
+                        boldLetters = '<b>' + firstHalf + secondHalf.substring(0, 2) + '</b>' + secondHalf.substring(2);
+                    } else {
+                        boldLetters = '<b>' + firstHalf + '</b>' + secondHalf;
+                    }
+                
+                } else {
+                    boldLetters = word;
+                }
+
+                formattedText += excludedStart + boldLetters + excludedEnd + ' ';
+            }
+
+            displaytextbutton.innerHTML = formattedText;
+        }
+        displayText();
+    </script>
+</body>
+</html>
